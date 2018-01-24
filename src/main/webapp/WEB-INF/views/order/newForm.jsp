@@ -13,7 +13,7 @@
 </head>
 <body>
     <div>
-        <form:form modelAttribute="workOrder" method="post">
+        <form:form modelAttribute="workOrder" method="post" action="/order/create">
             <table>
                 <tr>
                     <td>Order name:</td>

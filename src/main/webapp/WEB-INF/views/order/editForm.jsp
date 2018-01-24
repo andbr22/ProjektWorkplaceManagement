@@ -31,10 +31,12 @@
             <td>Amount:</td>
             <td><form:input path="amount"/></td>
         </tr>
-        <tr>
-            <td>Ready to process?</td>
-            <td><input type="checkbox" name="workReady"></td>
-        </tr>
+        <c:if test="${workOrder.readyToWork == null}">
+            <tr>
+                <td>Ready to process?</td>
+                <td><input type="checkbox" name="workReady"></td>
+            </tr>
+        </c:if>
         <tr>
             <td>Is Finished?</td>
             <td><form:checkbox path="finished"/></td>
@@ -44,7 +46,7 @@
             <td><form:checkbox path="stopped"/></td>
         </tr>
         <tr>
-            <td colspan="2"><input type="submit" value="Create new order"/></td>
+            <td colspan="2"><input type="submit" value="Edit order"/></td>
         </tr>
     </table>
 </form:form>

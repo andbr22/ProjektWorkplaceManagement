@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface WorkRepository extends JpaRepository<Work,Long> {
 
-    @Query("SELECT w FROM Work w WHERE current_timestamp")
-    public List<Work> last3Days();
+//    @Query("SELECT w FROM Work w WHERE current_timestamp")
+//    public List<Work> last3Days();
+
+    public List<Work> findAllByWorkOrderId(long id);
 }

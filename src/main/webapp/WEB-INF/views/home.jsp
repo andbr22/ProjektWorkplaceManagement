@@ -16,5 +16,9 @@
         <a href="/user/all">List of all users</a><br>
         <a href="/user/addToSession">Add user to session</a><br>
         <a href="/user/checkSession">Check user session</a><br/>
+        <hr/>
+        <a href="/work/">All active</a>
+        <hr/>
+        <a href="/stat/">Stat options</a>
 </body>
 </html>

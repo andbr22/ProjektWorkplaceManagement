@@ -26,9 +26,21 @@ public class Work {
     @JoinColumn(name = "id_workOrder")
     private WorkOrder workOrder;
 
+    @OneToOne
+    @JoinColumn(name = "id_comment")
+    private WorkComment comment;
+
     //Methods
 
     public Work() {
+    }
+
+    public WorkComment getComment() {
+        return comment;
+    }
+
+    public void setComment(WorkComment comment) {
+        this.comment = comment;
     }
 
     public int getEstimateWorkHours() {

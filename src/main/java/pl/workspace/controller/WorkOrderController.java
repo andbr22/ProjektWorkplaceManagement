@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.workspace.model.WorkComment;
 import pl.workspace.model.WorkOrder;
 import pl.workspace.repository.WorkOrderRepository;
 
@@ -52,7 +53,7 @@ public class WorkOrderController {
     @GetMapping("/edit/{id}")
     public String editOrderForm(Model model, @PathVariable("id") long id){
         WorkOrder workOrder = workOrderRepository.findOne(id);
-        if(workOrder.getReadyToRealisation().isBefore(LocalDateTime.now())){
+        if(workOrder.getReadyToRealisation()!= null && workOrder.getReadyToRealisation().isBefore(LocalDateTime.now())){
             return "redirect:/order";
         }
         model.addAttribute("workOrder", workOrder);
@@ -60,10 +61,14 @@ public class WorkOrderController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editOrder(@Valid WorkOrder workOrder, BindingResult bindingResult, @Param("workReady") boolean workReady){
+    public String editOrder(@PathVariable("id") long id, @Valid WorkOrder workOrder, BindingResult bindingResult, @Param("workReady") boolean workReady){
         if(bindingResult.hasErrors()){
             return "order/editForm";
         }
+        WorkOrder baseOrder = workOrderRepository.findOne(id);
+        workOrder.setCreated(baseOrder.getCreated());
+        workOrder.setReadyToRealisation(baseOrder.getReadyToRealisation());
+        workOrder.setReadyToWork(baseOrder.getReadyToWork());
         if(workReady && workOrder.getReadyToWork() == null){
             workOrder.setReadyToWork(LocalDateTime.now());
         }
@@ -90,4 +95,19 @@ public class WorkOrderController {
         workOrderRepository.save(workOrder);
         return "redirect:/order";
     }
+
+    @GetMapping("/clone/{id}")
+    public String cloneOrderForm(Model model, @PathVariable("id") long id){
+        WorkOrder workOrder = new WorkOrder();
+        WorkOrder workOrderToClone = workOrderRepository.findOne(id);
+
+        workOrder.setOrderName(workOrderToClone.getOrderName());
+        workOrder.setOrderDescription(workOrderToClone.getOrderDescription());
+        workOrder.setOrderClient(workOrderToClone.getOrderClient());
+
+        model.addAttribute("workOrder",workOrder);
+
+        return "order/newForm";
+    }
+
 }
