@@ -2,6 +2,7 @@ package pl.workspace.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     @GetMapping("/create")
     public String createUserForm(Model model){
         User user = new User();
@@ -34,6 +38,7 @@ public class UserController {
         if(bindingResult.hasErrors()||userNameExist != null){
             return "user/addForm";
         }
+        user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
         return "redirect:/user/all";
     }
@@ -87,4 +92,5 @@ public class UserController {
         }
         return session.getAttribute("user").toString();
     }
+
 }

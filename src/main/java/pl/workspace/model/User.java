@@ -91,4 +91,16 @@ public class User {
     public void setWorks(List<Work> works) {
         this.works = works;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", isEmployee=" + isEmployee +
+                '}';
+    }
 }

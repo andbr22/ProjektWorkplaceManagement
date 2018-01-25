@@ -52,6 +52,7 @@
         </c:forEach>
     </table>
 
-    <a href="/order/create">Create new</a>
+    <a href="/order/create">Create new</a><br/>
+    <a href="/stat/findWorkOrders">Search for work orders</a>
 </body>
 </html>

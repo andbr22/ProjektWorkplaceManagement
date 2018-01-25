@@ -1,6 +1,9 @@
 package pl.workspace.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,9 +15,11 @@ import pl.workspace.model.User;
 import pl.workspace.model.Work;
 import pl.workspace.model.WorkComment;
 import pl.workspace.model.WorkOrder;
+import pl.workspace.repository.UserRepository;
 import pl.workspace.repository.WorkCommentRepository;
 import pl.workspace.repository.WorkOrderRepository;
 import pl.workspace.repository.WorkRepository;
+import pl.workspace.security.UserPrincipal;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,17 +31,21 @@ import java.util.List;
 @RequestMapping("/work")
 public class WorkController {
     @Autowired
-    WorkRepository workRepository;
+    private WorkRepository workRepository;
     @Autowired
-    WorkOrderRepository workOrderRepository;
+    private WorkOrderRepository workOrderRepository;
     @Autowired
-    WorkCommentRepository workCommentRepository;
+    private WorkCommentRepository workCommentRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder encoder;
 
     @GetMapping("/add/{id}")
-    public String addNewWorkForm(Model model, @PathVariable("id") long orderId, HttpServletRequest request){
-        HttpSession session = request.getSession();
-        if(session.getAttribute("user") == null){
-            return "redirect:/user/addToSession";
+    public String addNewWorkForm(Model model, @PathVariable("id") long orderId, @AuthenticationPrincipal UserPrincipal principal){
+        User user = userRepository.findOne(principal.getId());
+        if(user == null){
+            return "redirect:/login";
         }
         WorkOrder workOrder = workOrderRepository.findOne(orderId);
         if(workOrder==null){
@@ -50,13 +59,13 @@ public class WorkController {
     }
 
     @PostMapping("/add/{orderId}")
-    public String addNewWork(Model model, @PathVariable("orderId") long orderId, HttpServletRequest request, @Valid Work work, BindingResult bindingResult){
+    public String addNewWork(Model model, @PathVariable("orderId") long orderId, @AuthenticationPrincipal UserPrincipal principal, @Valid Work work, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "work/addWork";
         }
-        HttpSession session = request.getSession();
-        if(session.getAttribute("user") == null){
-            return "redirect:/user/addToSession";
+        User user = userRepository.findOne(principal.getId());
+        if(user == null){
+            return "redirect:/login";
         }
         WorkOrder workOrder = workOrderRepository.findOne(orderId);
         if(workOrder==null){
@@ -67,7 +76,7 @@ public class WorkController {
         }else{
             workCommentRepository.save(work.getComment());
         }
-        work.setWorker((User) session.getAttribute("user"));
+        work.setWorker(user);
         work.setWorkOrder(workOrder);
         work.setAdded(LocalDateTime.now());
         workRepository.save(work);
@@ -97,5 +106,27 @@ public class WorkController {
         model.addAttribute("orders", activeOrders);
         model.addAttribute("now", LocalDateTime.now());
         return "work/allActive";
+    }
+
+
+    @GetMapping("/workerPassword")
+    public String workerChangePassForm(Model model){
+        return "user/workerPassword";
+    }
+
+    @PostMapping("/workerPassword")
+    public String workerChangePass(@AuthenticationPrincipal UserPrincipal principal, Model model, @Param("oldPass") String oldPass, @Param("newPass") String newPass, @Param("repeat") String repeat){
+        User worker = userRepository.findOne(principal.getId());
+        if(!encoder.matches(oldPass,worker.getPassword())){
+            model.addAttribute("message","Old password doesn't match");
+            return "user/workerPassword";
+        }
+        if (!newPass.equals(repeat)){
+            model.addAttribute("message","New password and Repeat new password don't match");
+            return "user/workerPassword";
+        }
+        worker.setPassword(encoder.encode(newPass));
+        userRepository.save(worker);
+        return "redirect:/work";
     }
 }
