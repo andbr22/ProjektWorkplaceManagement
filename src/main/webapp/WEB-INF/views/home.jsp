@@ -11,14 +11,35 @@
     <title>Mock home</title>
 </head>
 <body>
-        <a href="/order/">List of all orders</a>
-        <hr/>
-        <a href="/user/all">List of all users</a><br>
-        <a href="/user/addToSession">Add user to session</a><br>
-        <a href="/user/checkSession">Check user session</a><br/>
-        <hr/>
-        <a href="/work/">All active</a>
-        <hr/>
-        <a href="/stat/">Stat options</a>
+<table border="1px">
+    <tr>
+        <td>Worker</td>
+        <td>Shift supervisor</td>
+        <td>Monitor</td>
+        <td>Admin</td>
+        <td>Other</td>
+    </tr>
+    <tr>
+        <td>
+            <a href="/work/">Active orders, ready to work</a><br/>
+        </td>
+        <td>
+            <a href="/order/">Orders management</a><br/>
+        </td>
+        <td>
+            <a href="/stat/">Stats</a>
+        </td>
+        <td>
+            <a href="/user/">Worker management</a>
+        </td>
+        <td>
+            <a href="/register">Add new Admin</a><br/>
+            Only admin can add other workers<br/>
+            <a href="/login">Login</a><br/>
+            <a href="/logout">Logout</a><br/>
+        </td>
+    </tr>
+</table>
+
 </body>
 </html>

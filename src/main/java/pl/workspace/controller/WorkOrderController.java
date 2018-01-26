@@ -14,6 +14,7 @@ import pl.workspace.model.WorkOrder;
 import pl.workspace.repository.WorkOrderRepository;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -57,11 +58,12 @@ public class WorkOrderController {
             return "redirect:/order";
         }
         model.addAttribute("workOrder", workOrder);
+        model.addAttribute("now",LocalDateTime.now());
         return "order/editForm";
     }
 
     @PostMapping("/edit/{id}")
-    public String editOrder(@PathVariable("id") long id, @Valid WorkOrder workOrder, BindingResult bindingResult, @Param("workReady") boolean workReady){
+    public String editOrder(@PathVariable("id") long id, @Valid WorkOrder workOrder, BindingResult bindingResult, @Param("workReady") boolean workReady, @Param("readyDate")String readyDate){
         if(bindingResult.hasErrors()){
             return "order/editForm";
         }
@@ -70,20 +72,38 @@ public class WorkOrderController {
         workOrder.setReadyToRealisation(baseOrder.getReadyToRealisation());
         workOrder.setReadyToWork(baseOrder.getReadyToWork());
         if(workReady && workOrder.getReadyToWork() == null){
-            workOrder.setReadyToWork(LocalDateTime.now());
+            try{
+                LocalDate date = LocalDate.parse(readyDate);
+                workOrder.setReadyToWork(date.atStartOfDay());
+            }catch(Exception e){
+
+            }
         }
         workOrderRepository.save(workOrder);
         return "redirect:/order";
     }
 
-    @GetMapping("/{id}/ReadyToRealisation")
+    @GetMapping("/StopStart/{id}")
+    public String stopStartSwitch(@PathVariable("id") long id){
+        WorkOrder order = workOrderRepository.findOne(id);
+        if(order.isStopped()){
+            order.setStopped(false);
+        }else{
+            order.setStopped(true);
+        }
+        workOrderRepository.save(order);
+        return "redirect:/order";
+    }
+
+    @GetMapping("/ReadyToRealisation/{id}")
     public  String readyToRealisationConfirmation(@PathVariable("id") long id){
         WorkOrder workOrder = workOrderRepository.findOne(id);
         return"order/orderRealisationConfirmation";
     }
 
-    @PostMapping("/{id}/ReadyToRealisation")
+    @PostMapping("/ReadyToRealisation/{id}")
     public String readyToRealisation(@PathVariable("id") long id){
+        System.out.println("hey");
         WorkOrder workOrder = workOrderRepository.findOne(id);
         if(!workOrder.isFinished()){
             workOrder.setFinished(true);

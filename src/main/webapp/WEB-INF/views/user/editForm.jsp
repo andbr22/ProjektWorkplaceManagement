@@ -10,17 +10,26 @@
 <html>
 <head>
     <title>Edit existing user</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-<form:form modelAttribute="user" method="post">
-    <table>
-        <tr hidden="hidden"><td>Identity:</td><td><form:input path="userName"/></td></tr>
-        <tr><td>First name:</td><td><form:input path="firstName"/></td></tr>
-        <tr><td>Last name:</td><td><form:input path="lastName"/></td></tr>
-        <tr><td>Password:</td><td><form:input path="password"/></td></tr>
-        <tr><td>Is still employee?</td><td><form:checkbox path="employee"/></td></tr>
-    </table>
-    <input type="submit" value="Edit user"/>
-</form:form>
+<div class="container">
+    <form:form modelAttribute="user" method="post">
+        <form:input path="userName" hidden="hidden"/>
+        First name
+        <form:input path="firstName" class="form-control"/>
+        Last name
+        <form:input path="lastName" class="form-control"/>
+        Password
+        <form:password path="password" class="form-control"/>
+        <div class="form-check">
+            <form:checkbox path="employee" class="form-check-input"/>
+            <label class="form-check-label">Is still employee?</label>
+        </div>
+        <br>
+        <input type="submit" value="Edit user" class="btn btn-primary"/>
+    </form:form>
+</div>
 </body>
 </html>

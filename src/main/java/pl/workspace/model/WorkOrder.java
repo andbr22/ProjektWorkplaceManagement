@@ -142,4 +142,21 @@ public class WorkOrder {
         }
         return result;
     }
+
+    public int getMaxAlertLevel(){
+        int result = 0;
+        for(Work work: this.getWorks()){
+            if(work.getComment() == null){
+                continue;
+            }
+            if(work.getComment().getAlertLevel()==1){
+                result =1;
+            }
+            if(work.getComment().getAlertLevel()==2){
+                result =2;
+                break;
+            }
+        }
+        return result;
+    }
 }

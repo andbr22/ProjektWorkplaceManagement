@@ -10,38 +10,28 @@
 <html>
 <head>
     <title>Work Order</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-    <div>
+    <div class="container">
         <form:form modelAttribute="workOrder" method="post" action="/order/create">
-            <table>
-                <tr>
-                    <td>Order name:</td>
-                    <td><form:input path="orderName"/></td>
-                </tr>
-                <tr>
-                    <td>Client name:</td>
-                    <td><form:input path="orderClient"/></td>
-                </tr>
-                <tr>
-                    <td>Order description:</td>
-                    <td><form:input path="orderDescription"/></td>
-                </tr>
-                <tr>
-                    <td>Amount:</td>
-                    <td><form:input path="amount"/></td>
-                </tr>
-                <tr>
-                    <td>Ready to process?</td>
-                    <td><input type="checkbox" name="ready"></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><input type="submit" value="Create new order"/></td>
-                </tr>
-            </table>
+            Order name
+            <form:input path="orderName" class="form-control"/>
+            Client name
+            <form:input path="orderClient" class="form-control"/>
+            Order description
+            <form:input path="orderDescription" class="form-control"/>
+            Amount
+            <form:input path="amount" class="form-control"/>
+            <div class="form-check">
+                <input type="checkbox" name="ready" class="form-check-input"/>
+                <label class="form-check-label">Ready to process?</label>
+            </div>
+            <br/>
+            <input type="submit" value="Create new order" class="btn btn-primary"/>
+            <a href="/order/" class="btn btn-primary">Return to all view</a>
         </form:form>
     </div>
-
-    <a href="/order/">Return to all view</a>
 </body>
 </html>

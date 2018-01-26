@@ -37,6 +37,9 @@ public class StatController {
 
     @PostMapping("/findWorkOrders")
     public String findWorkOrders(Model model, @Param("choice") String choice, @Param("client") String client, @Param("order") String order, @Param("start") String start, @Param("end") String end){
+        if(choice == null){
+            return "stat/orderSearch";
+        }
         if (choice.equals("client")){
             List<WorkOrder> orders= workOrderRepository.findByOrderClientLike(client);
             model.addAttribute("orders",orders);
@@ -48,10 +51,15 @@ public class StatController {
             return "order/allOrders";
         }
         if(choice.equals("dates")){
-            System.out.println(start);
-            System.out.println(end);
-            List<WorkOrder> orders= workOrderRepository.chooseWorkOrderBetweenDates(LocalDateTime.now().minusDays(2),LocalDateTime.now());
-            model.addAttribute("orders",orders);
+            try{
+                LocalDateTime timeStart = LocalDate.parse(start).atStartOfDay();
+                LocalDateTime timeEnd = LocalDate.parse(end).atStartOfDay().plusDays(1);
+                List<WorkOrder> orders= workOrderRepository.chooseWorkOrderBetweenDates(timeStart,timeEnd);
+                model.addAttribute("orders",orders);
+            }catch(Exception e){
+                model.addAttribute("message", "Wrong date format");
+                return "redirect:/stat/findWorkOrders";
+            }
             return "order/allOrders";
         }
         return "redirect:/stat/findWorkOrders";

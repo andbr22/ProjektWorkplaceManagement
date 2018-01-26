@@ -9,12 +9,18 @@
 <html>
 <head>
     <title>Confirm work order realisation</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-    Are you sure you want confirm order?<br>
-    You wont be able to edit it any further.<br>
-    <form method="post"><input type="submit" value="Confirm realisation"></form>
-    <hr>
-    <a href="/order/">Return to order list</a>
+    <div class="container">
+        Are you sure you want confirm order?<br>
+        You wont be able to edit it any further.<br>
+        <form method="post">
+            <input type="submit" value="Confirm realisation" class="btn btn-primary"/>
+            <a href="/order/" class="btn btn-primary">Return to order list</a>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
+    </div>
 </body>
 </html>

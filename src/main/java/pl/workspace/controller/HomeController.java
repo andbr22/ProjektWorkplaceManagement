@@ -1,6 +1,7 @@
 package pl.workspace.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import pl.workspace.model.User;
 import pl.workspace.repository.UserRepository;
+import pl.workspace.security.UserPrincipal;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -25,16 +29,13 @@ public class HomeController {
         return "home";
     }
 
-//    @GetMapping("/login")
-//    public String loginForm(Model model){
-//
-//        return "login";
-//    }
-//
-//    @PostMapping("/login")
-//    public String login(){
-//        return "redirect:/";
-//    }
+    @GetMapping("/logout")
+    public String loginForm(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return "redirect:/login";
+    }
+
 
     @GetMapping("/register")
     public String adminRegisterForm(Model model){

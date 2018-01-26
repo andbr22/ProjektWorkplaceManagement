@@ -10,18 +10,19 @@
 <html>
 <head>
     <title>Active Work Order</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-    <table border="1px">
+    <table class="table">
             <tr>
-                <td>Order name</td>
-                <td>Client name</td>
-                <td>Order description</td>
-                <td>Amount to make</td>
-                <td>Amount done</td>
-                <td>Created</td>
-                <td>Ready to process</td>
-                <td>Actions</td>
+                <th>Order name</th>
+                <th>Client name</th>
+                <th>Order description</th>
+                <th>Amount to make</th>
+                <th>Amount done</th>
+                <th>Created</th>
+                <th>Ready to process</th>
+                <th>Actions</th>
             </tr>
         <c:forEach items="${orders}" var="order">
             <tr>
@@ -41,5 +42,9 @@
             </tr>
         </c:forEach>
     </table>
+    <div class="container">
+        <a href="/logout" class="btn btn-danger">Logout</a>
+        <a href="/work/workerPassword" class="btn btn-secondary">Change password</a>
+    </div>
 </body>
 </html>

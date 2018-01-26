@@ -10,26 +10,25 @@
 <html>
 <head>
     <title>Change worker password</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-    <div>
-        ${message}
-    </div>
+<div class="container">
+    ${message}
+</div>
+<div class="container">
     <form method="post">
-        <table>
-            <tr>
-                <td>Old password:</td>
-                <td><input type="password" name="oldPass"/></td>
-            </tr>
-            <tr>
-                <td>New password:</td>
-                <td><input type="password" name="newPass"/></td>
-            </tr>
-            <tr>
-                <td>Repeat new password:</td>
-                <td><input type="password" name="repeatPass"/></td>
-            </tr>
-        </table>
+        Old password
+        <input type="password" name="oldPass" class="form-control"/>
+        New password
+        <input type="password" name="newPass" class="form-control"/>
+        Repeat new password
+        <input type="password" name="repeatPass" class="form-control"/>
+        <br/>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input type="submit" value="Change Password" class="btn btn-primary"/>
     </form>
+</div>
 </body>
 </html>

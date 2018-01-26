@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: niblack
@@ -10,49 +11,67 @@
 <html>
 <head>
     <title>Manage all Orders</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../../style/simple.css">
 </head>
 <body>
-    <table border="1px">
-            <tr>
-                <td>Order name</td>
-                <td>Client name</td>
-                <td>Order description</td>
-                <td>Amount to make</td>
-                <td>Amount done</td>
-                <td>Created</td>
-                <td>Ready to process</td>
-                <td>Ready to realisation</td>
-                <td>Finished</td>
-                <td>Stopped</td>
-                <td>Actions</td>
-            </tr>
-        <c:forEach items="${orders}" var="order">
-            <tr>
-                <td>${order.orderName}</td>
-                <td>${order.orderClient}</td>
-                <td>${order.orderDescription}</td>
-                <td>${order.amount}</td>
-                <td>${order.wholeEstimatedAmount}</td>
-                <td>${order.created.toLocalDate()} ${order.created.toLocalTime()}</td>
-                <td>${order.readyToWork.toLocalDate()} ${order.readyToWork.toLocalTime()}</td>
-                <td>
-                    <c:choose>
-                        <c:when test="${order.readyToRealisation == null}"><a href="/order/${order.id}/ReadyToRealisation">SET</a></c:when>
-                        <c:otherwise>${order.readyToRealisation.toLocalDate()} ${order.readyToRealisation.toLocalTime()}</c:otherwise>
-                    </c:choose>
-                </td>
-                <td>${order.finished}</td>
-                <td>${order.stopped}</td>
-                <td>
-                    <c:if test="${order.readyToRealisation == null}"><a href="/order/edit/${order.id}">EDIT</a> </c:if>
-                    <a href="/order/clone/${order.id}">CLONE</a>
-                    <a href="/work/viewOrder/${order.id}">DETAILS</a>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
-
-    <a href="/order/create">Create new</a><br/>
-    <a href="/stat/findWorkOrders">Search for work orders</a>
+<table class="table">
+    <tr>
+        <th>Order name</th>
+        <th>Client name</th>
+        <th>Order description</th>
+        <th>Amount to make</th>
+        <th>Amount done</th>
+        <th>Created</th>
+        <th>Ready to process</th>
+        <th>Ready to realisation</th>
+        <th>Finished</th>
+        <th>Stopped</th>
+        <th>Actions</th>
+    </tr>
+    <c:forEach items="${orders}" var="order">
+        <c:choose>
+            <c:when test="${order.readyToRealisation != null}"><tr class="table-secondary"></c:when>
+            <c:when test="${order.getMaxAlertLevel()==0}"><tr></c:when>
+            <c:when test="${order.getMaxAlertLevel()==1}"><tr class="table-warning"></c:when>
+            <c:when test="${order.getMaxAlertLevel()==2}"><tr class="table-danger"></c:when>
+            <c:otherwise><tr></c:otherwise>
+        </c:choose>
+            <td>${order.orderName}</td>
+            <td>${order.orderClient}</td>
+            <td>${order.orderDescription}</td>
+            <td>${order.amount}</td>
+            <td>${order.wholeEstimatedAmount}</td>
+            <td>${order.created.toLocalDate()} ${order.created.toLocalTime()}</td>
+            <td>${order.readyToWork.toLocalDate()} ${order.readyToWork.toLocalTime()}</td>
+            <td>
+                <c:choose>
+                    <c:when test="${order.readyToRealisation == null}"><a href="/order/ReadyToRealisation/${order.id}">SET</a></c:when>
+                    <c:otherwise>${order.readyToRealisation.toLocalDate()} ${order.readyToRealisation.toLocalTime()}</c:otherwise>
+                </c:choose>
+            </td>
+            <td>${order.finished}</td>
+            <td>
+                <c:choose>
+                    <c:when test="${order.readyToRealisation != null}"></c:when>
+                    <c:when test="${order.stopped}"><a href="/order/StopStart/${order.id}"
+                                                       class="red">Stopped</a></c:when>
+                    <c:otherwise><a href="/order/StopStart/${order.id}" class="green">Started</a></c:otherwise>
+                </c:choose>
+            </td>
+            <td>
+                <c:if test="${order.readyToRealisation == null}"><a href="/order/edit/${order.id}">EDIT</a> </c:if>
+                <a href="/order/clone/${order.id}">CLONE</a>
+                <a href="/work/viewOrder/${order.id}">DETAILS</a>
+            </td>
+        </tr>
+    </c:forEach>
+</table>
+<div class="container">
+    <button onClick="window.print()" class="btn btn-secondary">Print</button>
+    <a href="/order/create" class="btn btn-primary">Create new</a>
+    <a href="/stat/findWorkOrders" class="btn btn-primary">Search for work orders</a>
+</div>
 </body>
 </html>

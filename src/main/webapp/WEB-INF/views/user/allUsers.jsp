@@ -10,15 +10,17 @@
 <html>
 <head>
     <title>List of all Users</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-    <table border="1px">
+    <table class="table">
             <tr>
-                <td>Identity</td>
-                <td>First name</td>
-                <td>Last name</td>
-                <td>is employee?</td>
-                <td>Action</td>
+                <th>Identity</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>is employee?</th>
+                <th>Action</th>
             </tr>
         <c:forEach items="${users}" var="user">
             <tr>
@@ -30,6 +32,8 @@
             </tr>
         </c:forEach>
     </table>
-    <a href="/user/create">Add new user</a>
+    <div class="container">
+        <a href="/user/create" class="btn btn-primary">Add new user</a>
+    </div>
 </body>
 </html>

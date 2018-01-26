@@ -10,22 +10,23 @@
 <html>
 <head>
     <title>View By Order</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
     <h2>Work Order</h2>
-    <table border="1px">
+    <table class="table">
         <tr>
-            <td>Order name</td>
-            <td>Client name</td>
-            <td>Order description</td>
-            <td>Amount to make</td>
-            <td>Amount done</td>
-            <td>Created</td>
-            <td>Ready to process</td>
-            <td>Ready to realisation</td>
-            <td>Finished</td>
-            <td>Stopped</td>
-            <td>Action</td>
+            <th>Order name</th>
+            <th>Client name</th>
+            <th>Order description</th>
+            <th>Amount to make</th>
+            <th>Amount done</th>
+            <th>Created</th>
+            <th>Ready to process</th>
+            <th>Ready to realisation</th>
+            <th>Finished</th>
+            <th>Stopped</th>
+            <th>Action</th>
         </tr>
         <tr>
             <td>${order.orderName}</td>
@@ -42,15 +43,15 @@
         </tr>
     </table>
     <h2>Work Tasks</h2>
-    <table border="1px">
+    <table class="table">
             <tr>
-                <td>Worker</td>
-                <td>Shift</td>
-                <td>Amount done</td>
-                <td>Estimated Work Hours</td>
-                <td>Day created</td>
-                <td>Alert level</td>
-                <td>Action</td>
+                <th>Worker</th>
+                <th>Shift</th>
+                <th>Amount done</th>
+                <th>Estimated Work Hours</th>
+                <th>Day created</th>
+                <th>Alert level</th>
+                <th>Action</th>
             </tr>
         <c:forEach items="${works}" var="work">
             <tr>
@@ -71,6 +72,8 @@
             </tr>
         </c:forEach>
     </table>
-<a href="/work/">Return to task list</a>
+    <div class="container">
+        <a href="/work/" class="btn btn-primary">Return to task list</a>
+    </div>
 </body>
 </html>

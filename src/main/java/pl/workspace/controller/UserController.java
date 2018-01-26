@@ -40,10 +40,10 @@ public class UserController {
         }
         user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
-        return "redirect:/user/all";
+        return "redirect:/user";
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     public String viewAllUsers(Model model){
         List<User> users = userRepository.findAll();
         model.addAttribute("users",users);
@@ -58,39 +58,40 @@ public class UserController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editUser(@Valid User user, BindingResult bindingResult){
+    public String editUser(@PathVariable("id") long id, @Valid User user, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             System.out.println(Arrays.toString(bindingResult.getAllErrors().toArray()));
             return "user/editForm";
         }
+        user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
-        return "redirect:/user/all";
+        return "redirect:/user";
     }
 
     //Mock methods
-    @GetMapping("/addToSession")
-    public String addUserToSessionForm(){
-        return "user/addSession";
-    }
-
-    @PostMapping("/addToSession")
-    public String addUserToSession(@Param("username") String username, HttpServletRequest request){
-        User user = userRepository.findByUserName(username);
-        HttpSession session = request.getSession();
-        if(user!=null){
-            session.setAttribute("user",user);
-        }
-        return "redirect:/";
-    }
-
-    @GetMapping("/checkSession")
-    @ResponseBody
-    public String checkUserSession(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        if (session.getAttribute("user")==null){
-            return "";
-        }
-        return session.getAttribute("user").toString();
-    }
+//    @GetMapping("/addToSession")
+//    public String addUserToSessionForm(){
+//        return "user/addSession";
+//    }
+//
+//    @PostMapping("/addToSession")
+//    public String addUserToSession(@Param("username") String username, HttpServletRequest request){
+//        User user = userRepository.findByUserName(username);
+//        HttpSession session = request.getSession();
+//        if(user!=null){
+//            session.setAttribute("user",user);
+//        }
+//        return "redirect:/";
+//    }
+//
+//    @GetMapping("/checkSession")
+//    @ResponseBody
+//    public String checkUserSession(HttpServletRequest request){
+//        HttpSession session = request.getSession();
+//        if (session.getAttribute("user")==null){
+//            return "";
+//        }
+//        return session.getAttribute("user").toString();
+//    }
 
 }

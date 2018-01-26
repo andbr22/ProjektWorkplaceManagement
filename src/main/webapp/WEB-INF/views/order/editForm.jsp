@@ -11,45 +11,40 @@
 <html>
 <head>
     <title>Edit Order Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-<form:form modelAttribute="workOrder" method="post">
-    <table>
-        <tr>
-            <td>Order name:</td>
-            <td><form:input path="orderName"/></td>
-        </tr>
-        <tr>
-            <td>Client name:</td>
-            <td><form:input path="orderClient"/></td>
-        </tr>
-        <tr>
-            <td>Order description:</td>
-            <td><form:input path="orderDescription"/></td>
-        </tr>
-        <tr>
-            <td>Amount:</td>
-            <td><form:input path="amount"/></td>
-        </tr>
+<div class="container">
+    <form:form modelAttribute="workOrder" method="post">
+        Order name
+        <form:input path="orderName" class="form-control"/>
+        Client name
+        <form:input path="orderClient" class="form-control"/>
+        Order description:
+        <form:input path="orderDescription" class="form-control"/>
+        Amount
+        <form:input path="amount" class="form-control"/>
         <c:if test="${workOrder.readyToWork == null}">
-            <tr>
-                <td>Ready to process?</td>
-                <td><input type="checkbox" name="workReady"></td>
-            </tr>
+            <div class="form-check">
+            <input type="checkbox" name="workReady" class="form-check-input"/>
+                <label class="form-check-label">Ready to process?</label>
+                <input type="date" name="readyDate" value="${now.toLocalDate()}" class="form-control"/>
+            </div>
         </c:if>
-        <tr>
-            <td>Is Finished?</td>
-            <td><form:checkbox path="finished"/></td>
-        </tr>
-        <tr>
-            <td>Is Stopped?</td>
-            <td><form:checkbox path="stopped"/></td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type="submit" value="Edit order"/></td>
-        </tr>
-    </table>
-</form:form>
-<a href="/order/">Return to all view</a>
+        <br/>
+        <div class="form-check">
+            <form:checkbox path="finished" class="form-check-input"/>
+            <label class="form-check-label">Is Finished?</label>
+        </div>
+        <div class="form-check">
+            <form:checkbox path="stopped" class="form-check-input"/>
+            <label class="form-check-label">Is Stopped?</label>
+        </div>
+        <br/>
+        <input type="submit" value="Edit Work Order" class="btn btn-primary"/>
+        <a href="/order/" class="btn btn-primary">Return to all view</a>
+    </form:form>
+</div>
 </body>
 </html>

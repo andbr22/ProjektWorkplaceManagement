@@ -17,7 +17,7 @@
         <tr><td>Identity:</td><td><form:input path="userName"/></td>
         <tr><td>First name:</td><td><form:input path="firstName"/></td></tr>
         <tr><td>Last name:</td><td><form:input path="lastName"/></td></tr>
-        <tr><td>Password:</td><td><form:input path="password"/></td></tr>
+        <tr><td>Password:</td><td><form:password path="password"/></td></tr>
     </table>
     <input type="submit" value="Add new admin"/>
 </form:form>

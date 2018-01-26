@@ -26,10 +26,11 @@
             <tr>
                 <td><input name="client"/></td>
                 <td><input name="order"/></td>
-                <td>NOT WORKING<input type="datetime-local" name="start"/><br/><input name="end"/></td>
+                <td><input type="date" name="start"/><br/><input type="date" name="end"/></td>
             </tr>
         </table>
         <input type="submit"/>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
 </body>
 </html>
