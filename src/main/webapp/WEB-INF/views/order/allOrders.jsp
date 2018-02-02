@@ -56,8 +56,8 @@
                 <c:choose>
                     <c:when test="${order.readyToRealisation != null}"></c:when>
                     <c:when test="${order.stopped}"><a href="/order/StopStart/${order.id}"
-                                                       class="red">Stopped</a></c:when>
-                    <c:otherwise><a href="/order/StopStart/${order.id}" class="green">Started</a></c:otherwise>
+                                                       class="red switch">Stopped</a></c:when>
+                    <c:otherwise><a href="/order/StopStart/${order.id}" class="green switch">Started</a></c:otherwise>
                 </c:choose>
             </td>
             <td>

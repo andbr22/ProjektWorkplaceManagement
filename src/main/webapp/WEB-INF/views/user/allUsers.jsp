@@ -23,7 +23,10 @@
                 <th>Action</th>
             </tr>
         <c:forEach items="${users}" var="user">
-            <tr>
+            <c:choose>
+                <c:when test="${user.employee}"><tr></c:when>
+                <c:otherwise><tr class="table-secondary"></c:otherwise>
+            </c:choose>
                 <td>${user.userName}</td>
                 <td>${user.firstName}</td>
                 <td>${user.lastName}</td>

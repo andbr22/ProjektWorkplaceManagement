@@ -5,10 +5,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.workspace.model.WorkComment;
 import pl.workspace.model.WorkOrder;
 import pl.workspace.repository.WorkOrderRepository;
@@ -46,7 +43,7 @@ public class WorkOrderController {
 
     @GetMapping("")
     public String listWorkOrders(Model model){
-        List<WorkOrder> orders = workOrderRepository.findAll();
+        List<WorkOrder> orders = workOrderRepository.findAllOrderByCreatedDesc();
         model.addAttribute("orders",orders);
         return "order/allOrders";
     }
@@ -95,6 +92,18 @@ public class WorkOrderController {
         return "redirect:/order";
     }
 
+    //Metoda REST
+    @PutMapping("/StopStart/{id}")
+    public void restStartStopSwitch(@PathVariable("id") long id){
+        WorkOrder order = workOrderRepository.findOne(id);
+        if(order.isStopped()){
+            order.setStopped(false);
+        }else{
+            order.setStopped(true);
+        }
+        workOrderRepository.save(order);
+    }
+
     @GetMapping("/ReadyToRealisation/{id}")
     public  String readyToRealisationConfirmation(@PathVariable("id") long id){
         WorkOrder workOrder = workOrderRepository.findOne(id);
@@ -128,6 +137,14 @@ public class WorkOrderController {
         model.addAttribute("workOrder",workOrder);
 
         return "order/newForm";
+    }
+
+    @GetMapping("/finish/{id}")
+    public String finishOrder(@PathVariable("id") long id){
+        WorkOrder workOrder = workOrderRepository.findOne(id);
+        workOrder.setFinished(true);
+        workOrderRepository.save(workOrder);
+        return "redirect:/work";
     }
 
 }

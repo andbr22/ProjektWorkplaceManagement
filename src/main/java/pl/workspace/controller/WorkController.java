@@ -115,13 +115,13 @@ public class WorkController {
     }
 
     @PostMapping("/workerPassword")
-    public String workerChangePass(@AuthenticationPrincipal UserPrincipal principal, Model model, @Param("oldPass") String oldPass, @Param("newPass") String newPass, @Param("repeat") String repeat){
+    public String workerChangePass(@AuthenticationPrincipal UserPrincipal principal, Model model, @Param("oldPass") String oldPass, @Param("newPass") String newPass, @Param("repeatPass") String repeatPass){
         User worker = userRepository.findOne(principal.getId());
         if(!encoder.matches(oldPass,worker.getPassword())){
             model.addAttribute("message","Old password doesn't match");
             return "user/workerPassword";
         }
-        if (!newPass.equals(repeat)){
+        if (!newPass.equals(repeatPass)){
             model.addAttribute("message","New password and Repeat new password don't match");
             return "user/workerPassword";
         }
