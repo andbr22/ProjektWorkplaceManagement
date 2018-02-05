@@ -1,6 +1,7 @@
 package pl.workspace.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.workspace.model.WorkComment;
 import pl.workspace.model.WorkOrder;
 import pl.workspace.repository.WorkOrderRepository;
+import pl.workspace.service.WorkOrderServiceImpl;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -20,6 +22,8 @@ import java.util.List;
 public class WorkOrderController {
     @Autowired
     WorkOrderRepository workOrderRepository;
+    @Autowired
+    WorkOrderServiceImpl workOrderService;
 
     @GetMapping("/create")
     public String workOrderForm(Model model){
@@ -43,8 +47,11 @@ public class WorkOrderController {
 
     @GetMapping("")
     public String listWorkOrders(Model model){
-        List<WorkOrder> orders = workOrderRepository.findAllOrderByCreatedDesc();
-        model.addAttribute("orders",orders);
+        //List<WorkOrder> orders = workOrderRepository.findAllOrderByCreatedDesc();
+
+        Page<WorkOrder> ordersPage = workOrderService.getWorkOrderPage(1);
+
+        model.addAttribute("orders",ordersPage.getContent());
         return "order/allOrders";
     }
 
