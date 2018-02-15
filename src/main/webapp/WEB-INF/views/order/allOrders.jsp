@@ -16,6 +16,8 @@
     <link rel="stylesheet" type="text/css" href="../../../style/simple.css">
 </head>
 <body>
+
+<%@ include file="pagination.jsp" %>
 <table class="table">
     <tr>
         <th>Order name</th>

@@ -1,6 +1,7 @@
 package pl.workspace.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.workspace.model.User;
 import pl.workspace.repository.UserRepository;
+import pl.workspace.service.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,7 +23,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private UserServiceImpl userService;
     @Autowired
     private PasswordEncoder encoder;
 
@@ -45,8 +48,20 @@ public class UserController {
 
     @GetMapping("")
     public String viewAllUsers(Model model){
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users",users);
+        //List<User> users = userRepository.findAll();
+        //model.addAttribute("users",users);
+        return"redirect:/user/page/1";
+    }
+
+    @GetMapping("/page/{page}")
+    public String viewUsersPage(Model model, @PathVariable("page") int page){
+        Page<User> usersPage = userService.getUserPage(page);
+
+        model.addAttribute("users",usersPage.getContent());
+        model.addAttribute("currentPage",usersPage.getNumber()+1);
+        model.addAttribute("paginationStart", Math.max(1, usersPage.getNumber()-4));
+        model.addAttribute("paginationEnd",Math.min(usersPage.getNumber()+10,usersPage.getTotalPages()));
+
         return"user/allUsers";
     }
 

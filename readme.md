@@ -5,10 +5,10 @@ For worker to fill how much of particular order has been done, and add optional 
 For shift supervisor to manage work orders (adding new, activating, closing, checking status, cloning), with easy to see which orders encountered difficulties.
 For system administrator to add and modify other system users
 For monitors to check and search specific work data.
+Most data shouldn't be deleted, so there is pagination for most data that can be too big to handle.
 
 TODO:
 - Priority - modify work order by column priority, and adding default sorting method as it.
-- Pagination - most data shouldn't be deleted, so there should be 
 - Roles
 - More searching methods
 - Extend by adding: fixed resources management.

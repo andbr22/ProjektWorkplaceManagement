@@ -46,12 +46,20 @@ public class WorkOrderController {
     }
 
     @GetMapping("")
-    public String listWorkOrders(Model model){
-        //List<WorkOrder> orders = workOrderRepository.findAllOrderByCreatedDesc();
+    public String listWorkOrders(){
+        return "redirect:/order/page/1";
+    }
 
-        Page<WorkOrder> ordersPage = workOrderService.getWorkOrderPage(1);
+    @GetMapping("/page/{page}")
+    public String listWorkOrdersPage(Model model, @PathVariable("page") int page){
+        Page<WorkOrder> ordersPage = workOrderService.getWorkOrderPage(page);
+
 
         model.addAttribute("orders",ordersPage.getContent());
+        model.addAttribute("currentPage",ordersPage.getNumber()+1);
+        model.addAttribute("paginationStart", Math.max(1, ordersPage.getNumber()-4));
+        model.addAttribute("paginationEnd",Math.min(ordersPage.getNumber()+10,ordersPage.getTotalPages()));
+
         return "order/allOrders";
     }
 
