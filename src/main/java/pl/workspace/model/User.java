@@ -31,6 +31,9 @@ public class User {
     @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL)
     private List<Work> works = new ArrayList<>();
 
+    @ManyToMany (fetch = FetchType.EAGER)
+    private List<Roles> roles =  new ArrayList<>();
+
     //Methods
 
     public User() {
@@ -90,6 +93,14 @@ public class User {
 
     public void setWorks(List<Work> works) {
         this.works = works;
+    }
+
+    public List<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Roles> roles) {
+        this.roles = roles;
     }
 
     @Override
